@@ -55,3 +55,35 @@ if uploaded_file:
         )
     except Exception as e:
         st.error(f"An error occurred: {e}")
+
+
+
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+
+# Example image size
+img_width, img_height = 800, 600  # Replace with actual image size
+
+# Example OCR bounding box coordinates
+x0, y0, x1, y1 = 100, 500, 150, 550  # OCR coordinates (top-left, bottom-right)
+
+# Create a PDF
+pdf_path = "output.pdf"
+pdf = canvas.Canvas(pdf_path, pagesize=letter)
+
+# PDF page size (in points)
+pdf_width, pdf_height = letter
+
+# Map coordinates to PDF system
+norm_x = x0 / img_width
+norm_y = y0 / img_height
+
+pdf_x = norm_x * pdf_width
+pdf_y = (1 - norm_y) * pdf_height  # Flip Y-axis
+
+# Draw the text
+pdf.drawString(pdf_x, pdf_y, "Example Text")
+
+# Save the PDF
+pdf.save()
+print(f"Text added to PDF at ({pdf_x}, {pdf_y}). Output saved to {pdf_path}.")
